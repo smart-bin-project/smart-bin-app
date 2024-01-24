@@ -22,7 +22,6 @@ const DashboardScreen = () => {
         width={350}
         height={200}
         yAxisLabel="Sales"
-        yAxisSuffix="k"
         yAxisInterval={1}
         chartConfig={{
           backgroundColor: '#e26a00',
