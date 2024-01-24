@@ -1,5 +1,5 @@
 // DashboardScreen.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import MQTTService from '../../services/mqttService';
@@ -16,9 +16,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
   const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
   const [mqttService] = useState(new MQTTService());
 
-  useFocusEffect(
+  useEffect(
     React.useCallback(() => {
       const connectAndSubscribe = async () => {
+        console.log(route.params?.subscribedTopic)
+
         const subscribedTopic = route.params?.subscribedTopic || '';
 
         try {
@@ -33,7 +35,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
           });
 
           // Display a confirmation message after subscribing
-          console.log('Subscribed to topic:', subscribedTopic);
+          console.log('Subscribe to topic:', subscribedTopic);
 
         } catch (error) {
           console.log('Failed to connect to MQTT:', error);
@@ -47,7 +49,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
         // Disconnect when the screen is unfocused
         mqttService.disconnect();
       };
-    }, [mqttService, route.params?.subscribedTopic])
+    }, [mqttService, route.params?.subscribedTopic]), [route.params?.subscribedTopic]
   );
 
   const updateReceivedMessages = (message: string) => {
