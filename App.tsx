@@ -22,7 +22,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-      <Tab.Screen name="Dashboards" component={DashboardScreen} initialParams={{ subscribedTopic }} />
+      <Tab.Screen name="Dashboard" component={DashboardScreen} initialParams={{ subscribedTopic }} />
         <Tab.Screen name="Inscrever">
           {(props) => (
             <Subscribe

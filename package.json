@@ -25,7 +25,8 @@
     "react-native-paper": "^5.12.2",
     "react-native-svg": "^7.2.1",
     "react-native-svg-charts": "^5.4.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "recharts": "^2.10.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
