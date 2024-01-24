@@ -50,8 +50,19 @@ class MQTTService {
   });
 }
 
+async publish(topic: string, message: string | ArrayBuffer) {
+  return new Promise<void>((resolve, reject) => {
+    const messageObject = new Paho.Message(message);
+    messageObject.destinationName = topic;
 
-  async disconnect(): Promise<void> {
+    this.client.send(messageObject);
+
+    resolve();
+  });
+}
+
+
+async disconnect(): Promise<void> {
     return new Promise((resolve) => {
       this.client.disconnect();
       resolve();

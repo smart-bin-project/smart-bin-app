@@ -1,28 +1,20 @@
 // DashboardScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import MQTTService from '../../services/mqttService';
 
-type ParamListBase = {
-  Dashboard: { subscribedTopic?: string };
-};
+interface DashboardScreenProps {
+  subscribedTopic: string;
+}
 
-export type DashboardScreenProps = {
-  route: RouteProp<ParamListBase, 'Dashboard'>;
-};
-
-const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
+const DashboardScreen: React.FC<DashboardScreenProps> = ({ subscribedTopic }) => {
   const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
   const [mqttService] = useState(new MQTTService());
 
-  useEffect(
+  useFocusEffect(
     React.useCallback(() => {
       const connectAndSubscribe = async () => {
-        console.log(route.params?.subscribedTopic)
-
-        const subscribedTopic = route.params?.subscribedTopic || '';
-
         try {
           await mqttService.connect();
           console.log('MQTT Connected!');
@@ -30,8 +22,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
           console.log('Subscribed to topic:', subscribedTopic);
 
           await mqttService.subscribe(subscribedTopic, (message) => {
-            console.log('Received message:', message.payloadString);
-            updateReceivedMessages(message.payloadString);
+            const receivedMessage = message.payloadString;
+            console.log('Received message:', receivedMessage);
+
+            // Update the received messages state
+            setReceivedMessages((prevMessages) => [...prevMessages, receivedMessage]);
           });
 
           // Display a confirmation message after subscribing
@@ -49,12 +44,8 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
         // Disconnect when the screen is unfocused
         mqttService.disconnect();
       };
-    }, [mqttService, route.params?.subscribedTopic]), [route.params?.subscribedTopic]
+    }, [mqttService, subscribedTopic])
   );
-
-  const updateReceivedMessages = (message: string) => {
-    setReceivedMessages((prevMessages) => [...prevMessages, message]);
-  };
 
   return (
     <View style={{ flex: 1, padding: 16 }}>

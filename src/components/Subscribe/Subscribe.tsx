@@ -5,9 +5,10 @@ import { View, Text, StyleSheet } from 'react-native';
 
 interface SubscribeProps {
   setSubscribedTopic: React.Dispatch<React.SetStateAction<string>>;
+  setReceivedMessages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Subscribe: React.FC<SubscribeProps> = ({ setSubscribedTopic }) => {
+const Subscribe: React.FC<SubscribeProps> = ({ setSubscribedTopic, setReceivedMessages }) => {
   const [topic, setTopic] = useState('');
   const [confirmationVisible, setConfirmationVisible] = useState(false);
 
@@ -19,6 +20,11 @@ const Subscribe: React.FC<SubscribeProps> = ({ setSubscribedTopic }) => {
     setConfirmationVisible(true);
 
     // Add logic to trigger MQTT subscription here
+
+    // Update received messages state
+    setReceivedMessages([]);
+
+    // You can add logic here to handle subscription and update messages dynamically
   };
 
   const onDismissConfirmation = () => {
@@ -41,18 +47,17 @@ const Subscribe: React.FC<SubscribeProps> = ({ setSubscribedTopic }) => {
         Inscrever-se no tópico
       </Button>
 
-     {/* Confirmation Snackbar */}
-    <Snackbar
-      visible={confirmationVisible}
-      onDismiss={onDismissConfirmation}
-      action={{
-        label: 'OK',
-        onPress: onDismissConfirmation,
-      }}
-    >
-      {confirmationVisible && `Assinatura concluída para o tópico: ${topic}`}
-    </Snackbar>
-
+      {/* Confirmation Snackbar */}
+      <Snackbar
+        visible={confirmationVisible}
+        onDismiss={onDismissConfirmation}
+        action={{
+          label: 'OK',
+          onPress: onDismissConfirmation,
+        }}
+      >
+        {confirmationVisible && `Assinatura concluída para o tópico: ${topic}`}
+      </Snackbar>
     </View>
   );
 };
