@@ -1,18 +1,11 @@
-// App.js
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import Subscribe from './src/components/Subscribe/Subscribe';
 import Publish from './src/components/Publish/Publish';
 import DashboardScreen from './src/components/Dashboard/Dashboard';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-
-type ParamListBase = {
-  Dashboard: { subscribedTopic?: string };
-};
 
 const App = () => {
   const [subscribedTopic, setSubscribedTopic] = useState('');
@@ -22,8 +15,9 @@ const App = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Dashboard">
-          {() => (
+          {(props) => (
             <DashboardScreen
+              {...props}
               subscribedTopic={subscribedTopic}
               receivedMessages={receivedMessages}
             />
