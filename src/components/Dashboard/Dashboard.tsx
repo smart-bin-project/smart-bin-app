@@ -62,13 +62,13 @@ const DashboardScreen = ({ subscribedTopic }: { subscribedTopic: string }) => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
       <Text style={{ marginBottom: 20, fontSize: 18 }}>Volume de lixo (%) x 5 minutos</Text>
 
-      <View style={{ backgroundColor: '#e7dfec', borderRadius: 10, padding: 10 }}>
+      <View style={{ width: 350, backgroundColor: '#e7dfec', borderRadius: 10, padding: 10 }}>
         <LineChart
           data={lineData.length ? lineData : defaultRange} // Use default range if lineData is empty
           height={250}
           showVerticalLines
           spacing={44}
-          initialSpacing={0}
+          initialSpacing={15}
           color1="#674fa3"
           textColor1="green"
           dataPointsHeight={6}
@@ -76,9 +76,11 @@ const DashboardScreen = ({ subscribedTopic }: { subscribedTopic: string }) => {
           dataPointsColor1="blue"
           dataPointsColor2="red"
           textShiftY={-2}
-          textShiftX={-5}
+          textShiftX={0}
           textFontSize={13}
           isAnimated
+          startIndex={-10}
+          endIndex={10}
         />
       </View>
 
