@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import Subscribe from './src/components/Subscribe/Subscribe';
 import Publish from './src/components/Publish/Publish';
-import DashboardScreen, { DashboardScreenProps } from './src/components/Dashboard/Dashboard';
+import DashboardScreen from './src/components/Dashboard/Dashboard';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
