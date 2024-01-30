@@ -3,11 +3,14 @@ import { View, Text } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import MQTTService from '../../services/mqttService';
 import { LineChart } from "react-native-gifted-charts";
+import SmartBinClient from '../../services/trashDataService'; // Import SmartBinService
 
 const DashboardScreen = ({ subscribedTopic }: { subscribedTopic: string }) => {
   const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
   const [mqttService] = useState(new MQTTService());
   const [lineData, setLineData] = useState<Array<{ value: number, dataPointText: string }>>([]);
+  const [smartBinData, setSmartBinData] = useState<any>(null); // State to store smart bin data
+  const smartBinService = new SmartBinClient(); // Create instance of SmartBinService
 
   useEffect(() => {
     const connectAndSubscribe = async () => {
@@ -55,12 +58,27 @@ const DashboardScreen = ({ subscribedTopic }: { subscribedTopic: string }) => {
     };
   }, [mqttService, subscribedTopic]);
 
+  // Load smart bin data when component mounts
+  useEffect(() => {
+    const loadSmartBinData = async () => {
+      try {
+        // Call getSmartBinById function with the desired ID
+        const data = await smartBinService.getSmartBinById(1);
+        setSmartBinData(data);
+      } catch (error) {
+        console.error('Error fetching smart bin data:', error);
+      }
+    };
+
+    loadSmartBinData();
+  }, []); // Empty dependency array ensures this effect runs only once
+
   // Default range for the chart
   const defaultRange = [{ value: 0, dataPointText: '0' }];
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-      <Text style={{ marginBottom: 20, fontSize: 18 }}>Volume de lixo (%) x 5 minutos</Text>
+      <Text style={{ marginBottom: 20, fontSize: 18, fontWeight: 'bold' }}>Volume de lixo (%) x 5 minutos</Text>
 
       <View style={{ width: 350, backgroundColor: '#e7dfec', borderRadius: 10, padding: 10 }}>
         <LineChart
@@ -75,14 +93,26 @@ const DashboardScreen = ({ subscribedTopic }: { subscribedTopic: string }) => {
           dataPointsWidth={6}
           dataPointsColor1="blue"
           dataPointsColor2="red"
-          textShiftY={-2}
+          textShiftY={-7}
           textShiftX={0}
           textFontSize={13}
           isAnimated
-          startIndex={-10}
-          endIndex={10}
         />
       </View>
+
+      <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+      <Text style={{fontSize: 18, fontWeight: 'bold' }}>Dados da lixeira inteligente</Text>
+      {/* Display smart bin data */}
+      {smartBinData && (
+        <View style={{ marginTop: 20, backgroundColor: '#e7dfec', justifyContent: 'center', alignItems: 'center', 
+        padding: 10, borderRadius: 10}}>
+          <Text style={{fontSize: 15, marginBottom: 8}}>Lixeira número {smartBinData.binNumber}</Text>
+          <Text style={{fontSize: 15, marginBottom: 8}}>Enchimento mais recente: {smartBinData.fullTime}</Text>
+          <Text style={{fontSize: 15, marginBottom: 8}}>Esvaziamento mais recente: {smartBinData.emptyTime}</Text>
+        </View>
+      )}
+      </View>
+
 
     </View>
   );
