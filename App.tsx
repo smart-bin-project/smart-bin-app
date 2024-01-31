@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Subscribe from './src/components/Subscribe/Subscribe';
 import Publish from './src/components/Publish/Publish';
 import DashboardScreen from './src/components/Dashboard/Dashboard';
+import {AntDesign, FontAwesome} from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +15,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Dashboard">
+        <Tab.Screen name="Dashboard"
+        options={{
+          tabBarIcon: ({}) => (
+            <AntDesign name="linechart" size={24} color="black" />)
+        }}>
           {(props) => (
             <DashboardScreen
               {...props}
@@ -22,8 +27,13 @@ const App = () => {
               receivedMessages={receivedMessages}
             />
           )}
+        
         </Tab.Screen>
-        <Tab.Screen name="Inscrever">
+        <Tab.Screen name="Inscrever"
+        options={{
+          tabBarIcon: ({}) => (
+            <AntDesign name="inbox" size={24} color="black" />)
+        }}>
           {(props) => (
             <Subscribe
               {...props}
@@ -32,7 +42,12 @@ const App = () => {
             />
           )}
         </Tab.Screen>
-        <Tab.Screen name="Publicar" component={Publish} />
+        <Tab.Screen name="Publicar" 
+        options={{
+          tabBarIcon: ({}) => (
+            <AntDesign name="upload" size={24} color="black" />)
+        }}
+        component={Publish} />
         {/* Add more screens or tabs as needed */}
       </Tab.Navigator>
     </NavigationContainer>
