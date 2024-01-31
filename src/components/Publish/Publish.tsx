@@ -11,10 +11,11 @@ interface PublishProps {
 
 const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessages }) => {
   const [topic, setTopic] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('0');
 
-  const handlePublish = async () => {
+  const handlePublish = async (message: string) => {
     try {
+      console.log('executou')
       const mqttService = new MQTTService();
       await mqttService.connect();
 
@@ -28,6 +29,16 @@ const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessag
     }
   };
 
+  const handleOpenLixeira = async () => {
+    handlePublish('0');
+  };
+  
+  const handleCloseLixeira = async () => {
+    // Set message state to 1 (fechar lixeira)
+    handlePublish('1');
+  };
+  
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Publicar</Text>
@@ -40,16 +51,13 @@ const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessag
         />
       </View>
       <View>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 5 }}>Mensagem</Text>
-        <TextInput
-          value={message}
-          onChangeText={(text) => setMessage(text)}
-          style={styles.input}
-        />
+          <Button mode="contained" style={styles.button} onPress={handleOpenLixeira}>
+            Abrir lixeira
+          </Button>
+          <Button mode="contained" style={styles.button} onPress={handleCloseLixeira}>
+            Fechar lixeira
+          </Button>
       </View>
-      <Button mode="contained" style={styles.button} onPress={handlePublish}>
-        Publicar no tópico
-      </Button>
     </View>
   );
 };
@@ -67,6 +75,12 @@ const styles = StyleSheet.create({
     width: 200,
     marginLeft: 100,
     alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
 });
 
