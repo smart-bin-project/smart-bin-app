@@ -30,12 +30,12 @@ const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessag
   };
 
   const handleOpenLixeira = async () => {
-    handlePublish('0');
+    handlePublish('open');
   };
   
   const handleCloseLixeira = async () => {
     // Set message state to 1 (fechar lixeira)
-    handlePublish('1');
+    handlePublish('close');
   };
   
 
