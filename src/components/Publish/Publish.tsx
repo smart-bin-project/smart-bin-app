@@ -1,17 +1,15 @@
 // Publish.js
-import React, { useState } from 'react';
-import { TextInput, Button } from 'react-native-paper';
+import React from 'react';
+import { Button } from 'react-native-paper';
 import { View, Text, StyleSheet } from 'react-native';
 import MQTTService from '../../services/mqttService';
 
 interface PublishProps {
-  setSubscribedTopic: React.Dispatch<React.SetStateAction<string>>;
   setReceivedMessages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessages }) => {
-  const [topic, setTopic] = useState('');
-  const [message, setMessage] = useState('0');
+const Publish: React.FC<PublishProps> = ({ setReceivedMessages }) => {
+  const topic = "node-red/test"; // Set your specific topic here
 
   const handlePublish = async (message: string) => {
     try {
@@ -43,12 +41,7 @@ const Publish: React.FC<PublishProps> = ({ setSubscribedTopic, setReceivedMessag
     <View style={styles.container}>
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Publicar</Text>
       <View>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 5 }}>Tópico</Text>
-        <TextInput
-          value={topic}
-          onChangeText={(text) => setTopic(text)}
-          style={styles.input}
-        />
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 5 }}>Tópico: {topic}</Text>
       </View>
       <View>
           <Button mode="contained" style={styles.button} onPress={handleOpenLixeira}>
@@ -67,20 +60,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  input: {
-    marginBottom: 16,
-  },
   button: {
     marginTop: 16,
     width: 200,
     marginLeft: 100,
     alignItems: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
   },
 });
 

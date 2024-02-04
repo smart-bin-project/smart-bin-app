@@ -23,24 +23,11 @@ const App = () => {
           {(props) => (
             <DashboardScreen
               {...props}
-              subscribedTopic={subscribedTopic}
+              subscribedTopic={'node-red/test'}
               receivedMessages={receivedMessages}
             />
           )}
         
-        </Tab.Screen>
-        <Tab.Screen name="Inscrever"
-        options={{
-          tabBarIcon: ({}) => (
-            <AntDesign name="inbox" size={24} color="black" />)
-        }}>
-          {(props) => (
-            <Subscribe
-              {...props}
-              setSubscribedTopic={setSubscribedTopic}
-              setReceivedMessages={setReceivedMessages}
-            />
-          )}
         </Tab.Screen>
         <Tab.Screen name="Publicar" 
         options={{
